@@ -1,10 +1,6 @@
 import re
-import sys
-import io
 from collections import Counter
-
-# Configure UTF-8 encoding for console output on Windows
-sys.stdout = io.TextIOWrapper(sys.stdout.buffer, encoding='utf-8')
+from matplotlib import pyplot
 
 STOPWORDS = {
     "the","a","an","and","or","but","in","on",
@@ -26,9 +22,11 @@ def analyze(filepath, top_n=20):
     tokens = tokenize(clean(raw))
     filtered = [w for w in tokens if w not in STOPWORDS]
     counts = Counter(filtered)
-    print(f"\nTop {top_n} words:\n")
-    for word, freq in counts.most_common(top_n):
-        bar = "█" * (freq // 50)
-        print(f"  {word:<15} {freq:>5}  {bar}")
+
+    plt = pyplot
+    words, freqs = zip(*counts.most_common(top_n))
+
+    plt.bar(words, freqs)
+    plt.show()
 
 analyze("frankenstein.txt")
