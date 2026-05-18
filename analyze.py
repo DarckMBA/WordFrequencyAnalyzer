@@ -26,7 +26,11 @@ def analyze(filepath, top_n=20):
     plt = pyplot
     words, freqs = zip(*counts.most_common(top_n))
 
-    plt.bar(words, freqs)
+    plt.figure(figsize=(10, 5))
+    plt.title("Top 20 words")
+    plt.bar(words, freqs, color="steelblue")
+    plt.xticks(rotation=45, ha="right")
+    plt.tight_layout()
     plt.show()
 
 analyze("frankenstein.txt")
