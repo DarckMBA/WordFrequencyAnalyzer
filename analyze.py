@@ -8,6 +8,8 @@ STOPWORDS = {
     "this","with","he","she","i","you","we","they"
 }
 
+
+# Helper functions
 def clean(text):
     text = text.lower()
     text = re.sub(r"[^a-z\s]", "", text)
@@ -16,22 +18,31 @@ def clean(text):
 def tokenize(text):
     return text.split()
 
-def analyzeMonograms(filepath, top_n=20):
+def wordsAndFreqs(filepath):
     with open(filepath, "r", encoding="utf-8") as f:
         raw = f.read()
     tokens = tokenize(clean(raw))
     filtered = [w for w in tokens if w not in STOPWORDS]
     counts = Counter(filtered)
-    words, freqs = zip(*counts.most_common(top_n))
+
+    return counts, len(filtered)
+
+
+# Function for analyzing a books monograms
+def analyzeMonograms(filepath, top_n=20):
+    counter, total =wordsAndFreqs(filepath)
+    words, freqs = zip(*counter.most_common(top_n))
 
     plt = pyplot
     plt.figure(figsize=(10, 5))
-    plt.title("Top 20 words")
+    plt.title("Top 20 Words")
     plt.bar(words, freqs, color="steelblue")
     plt.xticks(rotation=45, ha="right")
     plt.tight_layout()
     plt.show()
 
+
+# Function for analyzing a books bigrams
 def analyzeBigrams(filepath, top_n=20):
     with open(filepath, "r", encoding="utf-8") as f:
         raw = f.read()
@@ -44,11 +55,89 @@ def analyzeBigrams(filepath, top_n=20):
 
     plt = pyplot
     plt.figure(figsize=(10, 5))
-    plt.title("Top 20 bigrams (word pairs)")
+    plt.title("Top 20 Bigrams (word pairs)")
     plt.bar(pairs, freqs, color="steelblue")
     plt.xticks(rotation=45, ha="right")
     plt.tight_layout()
     plt.show()
 
-analyzeMonograms("frankenstein.txt")
-analyzeBigrams("frankenstein.txt")
+
+# Function for comparing two books top unique words
+def compareTopUnique(filepathA, filepathB):
+    counter_a, total_a = wordsAndFreqs(filepathA)
+    counter_b, total_b = wordsAndFreqs(filepathB)
+    
+    words_set_a = set(counter_a.keys())
+    words_set_b = set(counter_b.keys())
+    
+    unique_to_a = words_set_a - words_set_b
+    unique_to_b = words_set_b - words_set_a
+    
+    unique_counter_a = {word: counter_a[word] for word in unique_to_a}
+    top_10_unique_a = sorted(unique_counter_a.items(), key=lambda x: x[1], reverse=True)[:10]
+    unique_counter_b = {word: counter_b[word] for word in unique_to_b}
+    top_10_unique_b = sorted(unique_counter_b.items(), key=lambda x: x[1], reverse=True)[:10]
+
+    words_a, freqs_a = zip(*top_10_unique_a)
+    words_b, freqs_b = zip(*top_10_unique_b)
+
+    plt = pyplot
+    plt.figure(figsize=(12, 5))
+    plt.subplot(1, 2, 1)
+    plt.bar(words_a, freqs_a, color="blue")
+    plt.title("Top 10 Unique Words in " + filepathA)
+    plt.xticks(rotation=45, ha="right")
+    
+    plt.subplot(1, 2, 2)
+    plt.bar(words_b, freqs_b, color="red")
+    plt.title("Top 10 Unique Words in " + filepathB)
+    plt.xticks(rotation=45, ha="right")
+    
+    plt.tight_layout()
+    plt.show()
+
+
+# Function for comparing two books top common words
+def compareTopCommon(filepathA, filepathB):
+    counter_a, total_a = wordsAndFreqs(filepathA)
+    counter_b, total_b = wordsAndFreqs(filepathB)
+    
+    words_set_a = set(counter_a.keys())
+    words_set_b = set(counter_b.keys())
+    
+    common_for_a_and_b = words_set_a & words_set_b
+    
+    common_counter_a = {word: counter_a[word] for word in common_for_a_and_b}
+    top_10_common_a = sorted(common_counter_a.items(), key=lambda x: x[1], reverse=True)[:10]
+    common_counter_b = {word: counter_b[word] for word in common_for_a_and_b}
+    top_10_common_b = sorted(common_counter_b.items(), key=lambda x: x[1], reverse=True)[:10]
+
+    words_a, freqs_a = zip(*top_10_common_a)
+    words_b, freqs_b = zip(*top_10_common_b)
+
+    plt = pyplot
+    plt.figure(figsize=(12, 5))
+    plt.subplot(1, 2, 1)
+    plt.bar(words_a, freqs_a, color="blue")
+    plt.title("Top 10 Common Words in " + filepathA)
+    plt.xticks(rotation=45, ha="right")
+    
+    plt.subplot(1, 2, 2)
+    plt.bar(words_b, freqs_b, color="red")
+    plt.title("Top 10 Common Words in " + filepathB)
+    plt.xticks(rotation=45, ha="right")
+    
+    plt.tight_layout()
+    plt.show()
+
+
+# Function calls
+# analyzeMonograms("frankenstein.txt")
+# analyzeMonograms("romeoAndJuliet.txt")
+
+# analyzeBigrams("frankenstein.txt")
+# analyzeBigrams("romeoAndJuliet.txt")
+
+# compareTopUnique("frankenstein.txt", "romeoAndJuliet.txt")
+
+# compareTopCommon("frankenstein.txt", "romeoAndJuliet.txt")
