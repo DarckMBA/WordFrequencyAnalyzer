@@ -10,13 +10,13 @@ STOPWORDS = {
 
 
 # Helper functions
+def tokenize(text):
+    return text.split()
+
 def clean(text):
     text = text.lower()
     text = re.sub(r"[^a-z\s]", "", text)
     return text
-
-def tokenize(text):
-    return text.split()
 
 def wordsAndFreqs(filepath):
     with open(filepath, "r", encoding="utf-8") as f:
@@ -30,12 +30,12 @@ def wordsAndFreqs(filepath):
 
 # Function for analyzing a books monograms
 def analyzeMonograms(filepath, top_n=20):
-    counter, total =wordsAndFreqs(filepath)
+    counter, total = wordsAndFreqs(filepath)
     words, freqs = zip(*counter.most_common(top_n))
 
     plt = pyplot
     plt.figure(figsize=(10, 5))
-    plt.title("Top 20 Words")
+    plt.title("Top 20 Words in " + filepath)
     plt.bar(words, freqs, color="steelblue")
     plt.xticks(rotation=45, ha="right")
     plt.tight_layout()
@@ -55,7 +55,7 @@ def analyzeBigrams(filepath, top_n=20):
 
     plt = pyplot
     plt.figure(figsize=(10, 5))
-    plt.title("Top 20 Bigrams (word pairs)")
+    plt.title("Top 20 Bigrams (word pairs) in " + filepath)
     plt.bar(pairs, freqs, color="steelblue")
     plt.xticks(rotation=45, ha="right")
     plt.tight_layout()
@@ -63,7 +63,7 @@ def analyzeBigrams(filepath, top_n=20):
 
 
 # Function for comparing two books top unique words
-def compareTopUnique(filepathA, filepathB):
+def compareTopUnique(filepathA, filepathB, top_n=10):
     counter_a, total_a = wordsAndFreqs(filepathA)
     counter_b, total_b = wordsAndFreqs(filepathB)
     
@@ -74,9 +74,9 @@ def compareTopUnique(filepathA, filepathB):
     unique_to_b = words_set_b - words_set_a
     
     unique_counter_a = {word: counter_a[word] for word in unique_to_a}
-    top_10_unique_a = sorted(unique_counter_a.items(), key=lambda x: x[1], reverse=True)[:10]
+    top_10_unique_a = sorted(unique_counter_a.items(), key=lambda x: x[1], reverse=True)[:top_n]
     unique_counter_b = {word: counter_b[word] for word in unique_to_b}
-    top_10_unique_b = sorted(unique_counter_b.items(), key=lambda x: x[1], reverse=True)[:10]
+    top_10_unique_b = sorted(unique_counter_b.items(), key=lambda x: x[1], reverse=True)[:top_n]
 
     words_a, freqs_a = zip(*top_10_unique_a)
     words_b, freqs_b = zip(*top_10_unique_b)
@@ -84,12 +84,12 @@ def compareTopUnique(filepathA, filepathB):
     plt = pyplot
     plt.figure(figsize=(12, 5))
     plt.subplot(1, 2, 1)
-    plt.bar(words_a, freqs_a, color="blue")
+    plt.bar(words_a, freqs_a, color="steelblue")
     plt.title("Top 10 Unique Words in " + filepathA)
     plt.xticks(rotation=45, ha="right")
     
     plt.subplot(1, 2, 2)
-    plt.bar(words_b, freqs_b, color="red")
+    plt.bar(words_b, freqs_b, color="indianred")
     plt.title("Top 10 Unique Words in " + filepathB)
     plt.xticks(rotation=45, ha="right")
     
@@ -98,7 +98,7 @@ def compareTopUnique(filepathA, filepathB):
 
 
 # Function for comparing two books top common words
-def compareTopCommon(filepathA, filepathB):
+def compareTopCommon(filepathA, filepathB, top_n=10):
     counter_a, total_a = wordsAndFreqs(filepathA)
     counter_b, total_b = wordsAndFreqs(filepathB)
     
@@ -108,9 +108,9 @@ def compareTopCommon(filepathA, filepathB):
     common_for_a_and_b = words_set_a & words_set_b
     
     common_counter_a = {word: counter_a[word] for word in common_for_a_and_b}
-    top_10_common_a = sorted(common_counter_a.items(), key=lambda x: x[1], reverse=True)[:10]
+    top_10_common_a = sorted(common_counter_a.items(), key=lambda x: x[1], reverse=True)[:top_n]
     common_counter_b = {word: counter_b[word] for word in common_for_a_and_b}
-    top_10_common_b = sorted(common_counter_b.items(), key=lambda x: x[1], reverse=True)[:10]
+    top_10_common_b = sorted(common_counter_b.items(), key=lambda x: x[1], reverse=True)[:top_n]
 
     words_a, freqs_a = zip(*top_10_common_a)
     words_b, freqs_b = zip(*top_10_common_b)
@@ -118,12 +118,12 @@ def compareTopCommon(filepathA, filepathB):
     plt = pyplot
     plt.figure(figsize=(12, 5))
     plt.subplot(1, 2, 1)
-    plt.bar(words_a, freqs_a, color="blue")
+    plt.bar(words_a, freqs_a, color="steelblue")
     plt.title("Top 10 Common Words in " + filepathA)
     plt.xticks(rotation=45, ha="right")
     
     plt.subplot(1, 2, 2)
-    plt.bar(words_b, freqs_b, color="red")
+    plt.bar(words_b, freqs_b, color="indianred")
     plt.title("Top 10 Common Words in " + filepathB)
     plt.xticks(rotation=45, ha="right")
     
