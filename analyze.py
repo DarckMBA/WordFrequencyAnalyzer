@@ -1,6 +1,7 @@
 import re
 from collections import Counter
 from matplotlib import pyplot
+import argparse
 
 STOPWORDS = {
     "the","a","an","and","or","but","in","on",
@@ -209,6 +210,32 @@ def compareTopCommonBigrams(filepathA, filepathB, top_n=10):
     
     plt.tight_layout()
     plt.show()
+
+# Command-line arguments
+if __name__ == "__main__":
+    parser = argparse.ArgumentParser(description="Analyze word frequencies in text files")
+    parser.add_argument("filepath", help="Path to the text file to analyze")
+    parser.add_argument("filepath2", nargs="?", help="Second file for comparison functions")
+    parser.add_argument("--function", choices=["words", "bigrams", "compare-unique-words", 
+                                                "compare-common-words", "compare-unique-bigrams", 
+                                                "compare-common-bigrams"],
+                        default="words", help="Analysis function to run")
+    
+    args = parser.parse_args()
+    
+    if args.function == "words":
+        analyzeWords(args.filepath)
+    elif args.function == "bigrams":
+        analyzeBigrams(args.filepath)
+    elif args.function == "compare-unique-words":
+        compareTopUniqueWords(args.filepath, args.filepath2)
+    elif args.function == "compare-common-words":
+        compareTopCommonWords(args.filepath, args.filepath2)
+    elif args.function == "compare-unique-bigrams":
+        compareTopUniqueBigrams(args.filepath, args.filepath2)
+    elif args.function == "compare-common-bigrams":
+        compareTopCommonBigrams(args.filepath, args.filepath2)
+    
 
 
 # Function calls
