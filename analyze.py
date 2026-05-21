@@ -3,6 +3,8 @@ from collections import Counter
 from matplotlib import pyplot
 import argparse
 
+
+# List of words that do not need to be count
 STOPWORDS = {
     "the","a","an","and","or","but","in","on",
     "at","to","of","for","is","was","it","that",
@@ -235,20 +237,3 @@ if __name__ == "__main__":
         compareTopUniqueBigrams(args.filepath, args.filepath2)
     elif args.function == "compare-common-bigrams":
         compareTopCommonBigrams(args.filepath, args.filepath2)
-    
-
-
-# Function calls
-# analyzeWords("frankenstein.txt")
-# analyzeWords("romeoAndJuliet.txt")
-
-# analyzeBigrams("frankenstein.txt")
-# analyzeBigrams("romeoAndJuliet.txt")
-
-# compareTopUniqueWords("frankenstein.txt", "romeoAndJuliet.txt")
-
-# compareTopCommonWords("frankenstein.txt", "romeoAndJuliet.txt")
-
-# compareTopUniqueBigrams("frankenstein.txt", "romeoAndJuliet.txt")
-
-# compareTopCommonBigrams("frankenstein.txt", "romeoAndJuliet.txt")
