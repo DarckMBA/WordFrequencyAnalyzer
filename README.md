@@ -17,23 +17,51 @@ Requires Python 3.6+ with the following dependencies:
 pip install matplotlib
 ```
 
+### Quick Start
+```bash
+# Analyze word frequencies in a text file (top 10 by default)
+python analyze.py frankenstein.txt
+
+# Analyze top 15 words
+python analyze.py frankenstein.txt -n 15
+
+# Compare two texts
+python analyze.py frankenstein.txt romeoAndJuliet.txt --function compare-common-words
+```
+
 
 ## Usage
 ### Command-Line Interface
 ```bash
-python analyze.py <filepath> [filepath2] --function <function_name>
+python analyze.py <filepath> [filepath2] [--function <function_name>] [-n <number>]
 ```
+
+### Options
+- `filepath`: Path to the first text file to analyze (required)
+- `filepath2`: Path to a second file for comparison functions (optional)
+- `--number, -n`: Number of top items to display (default: 10)
+- `--function, -f`: Analysis function to run (default: words)
 
 ### Available Functions
 #### Single-File Analysis
-**`words`** (default) - Analyze top 20 most frequent words
+**`words`** (default) - Analyze top 10 most frequent words
 ```bash
 python analyze.py frankenstein.txt
 ```
 
-**`bigrams`** - Analyze top 20 most frequent word pairs
+Analyze top 20 words:
+```bash
+python analyze.py frankenstein.txt -n 20
+```
+
+**`bigrams`** - Analyze top 10 most frequent word pairs
 ```bash
 python analyze.py frankenstein.txt --function bigrams
+```
+
+Analyze top 15 bigrams:
+```bash
+python analyze.py frankenstein.txt -f bigrams -n 15
 ```
 
 #### Comparison Analysis (requires two files)
@@ -44,17 +72,17 @@ python analyze.py frankenstein.txt romeoAndJuliet.txt --function compare-unique-
 
 **`compare-common-words`** - Compare common words between two texts
 ```bash
-python analyze.py frankenstein.txt romeoAndJuliet.txt --function compare-common-words
+python analyze.py frankenstein.txt romeoAndJuliet.txt -f compare-common-words
 ```
 
 **`compare-unique-bigrams`** - Compare unique bigrams (word pairs) between two texts
 ```bash
-python analyze.py frankenstein.txt romeoAndJuliet.txt --function compare-unique-bigrams
+python analyze.py frankenstein.txt romeoAndJuliet.txt --function compare-unique-bigrams -n 15
 ```
 
 **`compare-common-bigrams`** - Compare common bigrams (word pairs) between two texts
 ```bash
-python analyze.py frankenstein.txt romeoAndJuliet.txt --function compare-common-bigrams
+python analyze.py frankenstein.txt romeoAndJuliet.txt -f compare-common-bigrams -n 20
 ```
 
 
@@ -84,18 +112,25 @@ To modify stopwords, edit the `STOPWORDS` set in `analyze.py`.
 - `bigramsAndFreqs(filepath)` - Returns bigram frequency counter and total bigram count
 
 ### Analysis Functions
-- `analyzeWords(filepath, top_n=20)` - Display word frequency bar chart
-- `analyzeBigrams(filepath, top_n=20)` - Display bigram frequency bar chart
-- `compareTopUniqueWords(filepathA, filepathB, top_n=10)` - Side-by-side unique words comparison
-- `compareTopCommonWords(filepathA, filepathB, top_n=10)` - Side-by-side common words comparison
-- `compareTopUniqueBigrams(filepathA, filepathB, top_n=10)` - Side-by-side unique bigrams comparison
-- `compareTopCommonBigrams(filepathA, filepathB, top_n=10)` - Side-by-side common bigrams comparison
+- `analyzeWords(filepath, top_n=20)` - Display word frequency bar chart (default top_n: 20)
+- `analyzeBigrams(filepath, top_n=20)` - Display bigram frequency bar chart (default top_n: 20)
+- `compareTopUniqueWords(filepathA, filepathB, top_n=10)` - Side-by-side unique words comparison (default top_n: 10)
+- `compareTopCommonWords(filepathA, filepathB, top_n=10)` - Side-by-side common words comparison (default top_n: 10)
+- `compareTopUniqueBigrams(filepathA, filepathB, top_n=10)` - Side-by-side unique bigrams comparison (default top_n: 10)
+- `compareTopCommonBigrams(filepathA, filepathB, top_n=10)` - Side-by-side common bigrams comparison (default top_n: 10)
+
+**Note**: The `-n` or `--number` command-line flag overrides function defaults.
 
 
 ## Examples
-### Analyze Frankenstein
+### Analyze Frankenstein (top 10 words, default)
 ```bash
 python analyze.py frankenstein.txt
+```
+
+### Analyze top 25 words in Frankenstein
+```bash
+python analyze.py frankenstein.txt -n 25
 ```
 
 ### Find common words between two texts
@@ -105,7 +140,12 @@ python analyze.py frankenstein.txt romeoAndJuliet.txt --function compare-common-
 
 ### Analyze top 20 bigrams
 ```bash
-python analyze.py romeoAndJuliet.txt --function bigrams
+python analyze.py romeoAndJuliet.txt --function bigrams -n 20
+```
+
+### Compare unique bigrams between texts (top 15)
+```bash
+python analyze.py frankenstein.txt romeoAndJuliet.txt -f compare-unique-bigrams -n 15
 ```
 
 
@@ -120,3 +160,5 @@ python analyze.py romeoAndJuliet.txt --function bigrams
 - Non-alphabetic characters (punctuation, numbers) are removed
 - The tool processes entire files into memory; very large files may require significant RAM
 - Charts can be saved from the matplotlib interface using the Save icon
+- Command-line flags can be used in any order after the filepath arguments
+- Short forms: `-n` for `--number`, `-f` for `--function`

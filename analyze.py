@@ -48,7 +48,7 @@ def analyzeWords(filepath, top_n=20):
 
     plt = pyplot
     plt.figure(figsize=(10, 5))
-    plt.title("Top 20 Words in " + filepath)
+    plt.title(f"Top {top_n} Words in {filepath}")
     plt.bar(words, freqs, color="steelblue")
     plt.xticks(rotation=45, ha="right")
     plt.tight_layout()
@@ -63,7 +63,7 @@ def analyzeBigrams(filepath, top_n=20):
 
     plt = pyplot
     plt.figure(figsize=(10, 5))
-    plt.title("Top 20 Bigrams (word pairs) in " + filepath)
+    plt.title(f"Top {top_n} Bigrams (word pairs) in {filepath}")
     plt.bar(pairs, freqs, color="steelblue")
     plt.xticks(rotation=45, ha="right")
     plt.tight_layout()
@@ -82,23 +82,23 @@ def compareTopUniqueWords(filepathA, filepathB, top_n=10):
     unique_to_b = words_set_b - words_set_a
     
     unique_counter_a = {word: counter_a[word] for word in unique_to_a}
-    top_10_unique_a = sorted(unique_counter_a.items(), key=lambda x: x[1], reverse=True)[:top_n]
+    top_unique_a = sorted(unique_counter_a.items(), key=lambda x: x[1], reverse=True)[:top_n]
     unique_counter_b = {word: counter_b[word] for word in unique_to_b}
-    top_10_unique_b = sorted(unique_counter_b.items(), key=lambda x: x[1], reverse=True)[:top_n]
+    top_unique_b = sorted(unique_counter_b.items(), key=lambda x: x[1], reverse=True)[:top_n]
 
-    words_a, freqs_a = zip(*top_10_unique_a)
-    words_b, freqs_b = zip(*top_10_unique_b)
+    words_a, freqs_a = zip(*top_unique_a)
+    words_b, freqs_b = zip(*top_unique_b)
 
     plt = pyplot
     plt.figure(figsize=(12, 5))
     plt.subplot(1, 2, 1)
     plt.bar(words_a, freqs_a, color="steelblue")
-    plt.title("Top 10 Unique Words in " + filepathA)
+    plt.title(f"Top {top_n} Unique Words in {filepathA}")
     plt.xticks(rotation=45, ha="right")
     
     plt.subplot(1, 2, 2)
     plt.bar(words_b, freqs_b, color="indianred")
-    plt.title("Top 10 Unique Words in " + filepathB)
+    plt.title(f"Top {top_n} Unique Words in {filepathB}")
     plt.xticks(rotation=45, ha="right")
     
     plt.tight_layout()
@@ -116,23 +116,23 @@ def compareTopCommonWords(filepathA, filepathB, top_n=10):
     common_for_a_and_b = words_set_a & words_set_b
     
     common_counter_a = {word: counter_a[word] for word in common_for_a_and_b}
-    top_10_common_a = sorted(common_counter_a.items(), key=lambda x: x[1], reverse=True)[:top_n]
+    top_common_a = sorted(common_counter_a.items(), key=lambda x: x[1], reverse=True)[:top_n]
     common_counter_b = {word: counter_b[word] for word in common_for_a_and_b}
-    top_10_common_b = sorted(common_counter_b.items(), key=lambda x: x[1], reverse=True)[:top_n]
+    top_common_b = sorted(common_counter_b.items(), key=lambda x: x[1], reverse=True)[:top_n]
 
-    words_a, freqs_a = zip(*top_10_common_a)
-    words_b, freqs_b = zip(*top_10_common_b)
+    words_a, freqs_a = zip(*top_common_a)
+    words_b, freqs_b = zip(*top_common_b)
 
     plt = pyplot
     plt.figure(figsize=(12, 5))
     plt.subplot(1, 2, 1)
     plt.bar(words_a, freqs_a, color="steelblue")
-    plt.title("Top 10 Common Words in " + filepathA)
+    plt.title(f"Top {top_n} Common Words in {filepathA}")
     plt.xticks(rotation=45, ha="right")
     
     plt.subplot(1, 2, 2)
     plt.bar(words_b, freqs_b, color="indianred")
-    plt.title("Top 10 Common Words in " + filepathB)
+    plt.title(f"Top {top_n} Common Words in {filepathB}")
     plt.xticks(rotation=45, ha="right")
     
     plt.tight_layout()
@@ -151,12 +151,12 @@ def compareTopUniqueBigrams(filepathA, filepathB, top_n=10):
     unique_to_b = words_set_b - words_set_a
 
     unique_counter_a = {word: counter_a[word] for word in unique_to_a}
-    top_10_unique_a = sorted(unique_counter_a.items(), key=lambda x: x[1], reverse=True)[:top_n]
+    top_unique_a = sorted(unique_counter_a.items(), key=lambda x: x[1], reverse=True)[:top_n]
     unique_counter_b = {word: counter_b[word] for word in unique_to_b}
-    top_10_unique_b = sorted(unique_counter_b.items(), key=lambda x: x[1], reverse=True)[:top_n]
+    top_unique_b = sorted(unique_counter_b.items(), key=lambda x: x[1], reverse=True)[:top_n]
 
-    words_a, freqs_a = zip(*top_10_unique_a)
-    words_b, freqs_b = zip(*top_10_unique_b)
+    words_a, freqs_a = zip(*top_unique_a)
+    words_b, freqs_b = zip(*top_unique_b)
 
     pairs_a = [" ".join(w) for w in words_a]
     pairs_b = [" ".join(w) for w in words_b]
@@ -165,12 +165,12 @@ def compareTopUniqueBigrams(filepathA, filepathB, top_n=10):
     plt.figure(figsize=(12, 5))
     plt.subplot(1, 2, 1)
     plt.bar(pairs_a, freqs_a, color="steelblue")
-    plt.title("Top 10 Unique Words in " + filepathA)
+    plt.title(f"Top {top_n} Unique Bigrams in {filepathA}")
     plt.xticks(rotation=45, ha="right")
     
     plt.subplot(1, 2, 2)
     plt.bar(pairs_b, freqs_b, color="indianred")
-    plt.title("Top 10 Unique Words in " + filepathB)
+    plt.title(f"Top {top_n} Unique Bigrams in {filepathB}")
     plt.xticks(rotation=45, ha="right")
     
     plt.tight_layout()
@@ -188,12 +188,12 @@ def compareTopCommonBigrams(filepathA, filepathB, top_n=10):
     common_for_a_and_b = words_set_a & words_set_b
     
     common_counter_a = {word: counter_a[word] for word in common_for_a_and_b}
-    top_10_common_a = sorted(common_counter_a.items(), key=lambda x: x[1], reverse=True)[:top_n]
+    top_common_a = sorted(common_counter_a.items(), key=lambda x: x[1], reverse=True)[:top_n]
     common_counter_b = {word: counter_b[word] for word in common_for_a_and_b}
-    top_10_common_b = sorted(common_counter_b.items(), key=lambda x: x[1], reverse=True)[:top_n]
+    top_common_b = sorted(common_counter_b.items(), key=lambda x: x[1], reverse=True)[:top_n]
 
-    words_a, freqs_a = zip(*top_10_common_a)
-    words_b, freqs_b = zip(*top_10_common_b)
+    words_a, freqs_a = zip(*top_common_a)
+    words_b, freqs_b = zip(*top_common_b)
 
     pairs_a = [" ".join(w) for w in words_a]
     pairs_b = [" ".join(w) for w in words_b]
@@ -202,23 +202,25 @@ def compareTopCommonBigrams(filepathA, filepathB, top_n=10):
     plt.figure(figsize=(12, 5))
     plt.subplot(1, 2, 1)
     plt.bar(pairs_a, freqs_a, color="steelblue")
-    plt.title("Top 10 Common Words in " + filepathA)
+    plt.title(f"Top {top_n} Common Bigrams in {filepathA}")
     plt.xticks(rotation=45, ha="right")
     
     plt.subplot(1, 2, 2)
     plt.bar(pairs_b, freqs_b, color="indianred")
-    plt.title("Top 10 Common Words in " + filepathB)
+    plt.title(f"Top {top_n} Common Bigrams in {filepathB}")
     plt.xticks(rotation=45, ha="right")
     
     plt.tight_layout()
     plt.show()
+
 
 # Command-line arguments
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description="Analyze word frequencies in text files")
     parser.add_argument("filepath", help="Path to the text file to analyze")
     parser.add_argument("filepath2", nargs="?", help="Second file for comparison functions")
-    parser.add_argument("--function", choices=["words", "bigrams", "compare-unique-words", 
+    parser.add_argument("--number", "-n", type=int, default=10, help="Number of words/bigrams to analyze (default: 10)")
+    parser.add_argument("--function", "-f", choices=["words", "bigrams", "compare-unique-words", 
                                                 "compare-common-words", "compare-unique-bigrams", 
                                                 "compare-common-bigrams"],
                         default="words", help="Analysis function to run")
@@ -226,14 +228,14 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     if args.function == "words":
-        analyzeWords(args.filepath)
+        analyzeWords(args.filepath, top_n=args.number)
     elif args.function == "bigrams":
-        analyzeBigrams(args.filepath)
+        analyzeBigrams(args.filepath, top_n=args.number)
     elif args.function == "compare-unique-words":
-        compareTopUniqueWords(args.filepath, args.filepath2)
+        compareTopUniqueWords(args.filepath, args.filepath2, top_n=args.number)
     elif args.function == "compare-common-words":
-        compareTopCommonWords(args.filepath, args.filepath2)
+        compareTopCommonWords(args.filepath, args.filepath2, top_n=args.number)
     elif args.function == "compare-unique-bigrams":
-        compareTopUniqueBigrams(args.filepath, args.filepath2)
+        compareTopUniqueBigrams(args.filepath, args.filepath2, top_n=args.number)
     elif args.function == "compare-common-bigrams":
-        compareTopCommonBigrams(args.filepath, args.filepath2)
+        compareTopCommonBigrams(args.filepath, args.filepath2, top_n=args.number)
