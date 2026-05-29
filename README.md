@@ -112,12 +112,12 @@ To modify stopwords, edit the `STOPWORDS` set in `analyze.py`.
 - `bigramsAndFreqs(filepath)` - Returns bigram frequency counter and total bigram count
 
 ### Analysis Functions
-- `analyzeWords(filepath, top_n=20)` - Display word frequency bar chart (default top_n: 20)
-- `analyzeBigrams(filepath, top_n=20)` - Display bigram frequency bar chart (default top_n: 20)
-- `compareTopUniqueWords(filepathA, filepathB, top_n=10)` - Side-by-side unique words comparison (default top_n: 10)
-- `compareTopCommonWords(filepathA, filepathB, top_n=10)` - Side-by-side common words comparison (default top_n: 10)
-- `compareTopUniqueBigrams(filepathA, filepathB, top_n=10)` - Side-by-side unique bigrams comparison (default top_n: 10)
-- `compareTopCommonBigrams(filepathA, filepathB, top_n=10)` - Side-by-side common bigrams comparison (default top_n: 10)
+- `analyze_words(filepath, top_n=20)` - Display word frequency bar chart (default top_n: 20)
+- `analyze_bigrams(filepath, top_n=20)` - Display bigram frequency bar chart (default top_n: 20)
+- `compare_top_unique_words(filepathA, filepathB, top_n=10)` - Side-by-side unique words comparison (default top_n: 10)
+- `compare_top_common_words(filepathA, filepathB, top_n=10)` - Side-by-side common words comparison (default top_n: 10)
+- `compare_top_unique_bigrams(filepathA, filepathB, top_n=10)` - Side-by-side unique bigrams comparison (default top_n: 10)
+- `compare_top_common_bigrams(filepathA, filepathB, top_n=10)` - Side-by-side common bigrams comparison (default top_n: 10)
 
 **Note**: The `-n` or `--number` command-line flag overrides function defaults.
 

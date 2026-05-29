@@ -1,14 +1,27 @@
 import re
 from collections import Counter
-from matplotlib import pyplot
+from matplotlib import pyplot as plt
 import argparse
 
 
 # List of words that do not need to be count
 STOPWORDS = {
-    "the","a","an","and","or","but","in","on",
-    "at","to","of","for","is","was","it","that",
-    "this","with","he","she","i","you","we","they"
+    'i', 'me', 'my', 'myself', 'we', 'our', 'ours',
+    'you', 'your', 'yours', 'he', 'him', 'his', 'she',
+    'her', 'it', 'its', 'they', 'them', 'what', 'which',
+    'who', 'this', 'that', 'am', 'is', 'are', 'was',
+    'were', 'be', 'have', 'has', 'had', 'do', 'does',
+    'did', 'a', 'an', 'the', 'and', 'but', 'if', 'or',
+    'because', 'as', 'until', 'while', 'of', 'at', 'by',
+    'for', 'with', 'about', 'against', 'between', 'into',
+    'through', 'during', 'before', 'after', 'above',
+    'below', 'to', 'from', 'up', 'down', 'in', 'out',
+    'on', 'off', 'over', 'under', 'again', 'further',
+    'then', 'once', 'here', 'there', 'when', 'where',
+    'why', 'how', 'all', 'any', 'both', 'each', 'few',
+    'more', 'most', 'other', 'some', 'such', 'no', 'nor',
+    'not', 'only', 'own', 'same', 'so', 'than', 'too',
+    'very', 'can', 'will', 'just', 'should', 'now'
 }
 
 
@@ -21,7 +34,7 @@ def clean(text):
     text = re.sub(r"[^a-z\s]", "", text)
     return text
 
-def wordsAndFreqs(filepath):
+def words_and_freqs(filepath):
     with open(filepath, "r", encoding="utf-8") as f:
         raw = f.read()
     tokens = tokenize(clean(raw))
@@ -30,7 +43,7 @@ def wordsAndFreqs(filepath):
 
     return counts, len(filtered)
 
-def bigramsAndFreqs(filepath):
+def bigrams_and_freqs(filepath):
     with open(filepath, "r", encoding="utf-8") as f:
         raw = f.read()
     tokens = tokenize(clean(raw))
@@ -42,11 +55,10 @@ def bigramsAndFreqs(filepath):
 
 
 # Function for analyzing a books monograms
-def analyzeWords(filepath, top_n=20):
-    counter, total = wordsAndFreqs(filepath)
+def analyze_words(filepath, top_n=20):
+    counter, total = words_and_freqs(filepath)
     words, freqs = zip(*counter.most_common(top_n))
 
-    plt = pyplot
     plt.figure(figsize=(10, 5))
     plt.title(f"Top {top_n} Words in {filepath}")
     plt.bar(words, freqs, color="steelblue")
@@ -56,12 +68,11 @@ def analyzeWords(filepath, top_n=20):
 
 
 # Function for analyzing a books bigrams
-def analyzeBigrams(filepath, top_n=20):
-    counts, total = bigramsAndFreqs(filepath)
+def analyze_bigrams(filepath, top_n=20):
+    counts, total = bigrams_and_freqs(filepath)
     words, freqs = zip(*counts.most_common(top_n))
     pairs = [" ".join(w) for w in words]
 
-    plt = pyplot
     plt.figure(figsize=(10, 5))
     plt.title(f"Top {top_n} Bigrams (word pairs) in {filepath}")
     plt.bar(pairs, freqs, color="steelblue")
@@ -71,9 +82,9 @@ def analyzeBigrams(filepath, top_n=20):
 
 
 # Function for comparing two books top unique words
-def compareTopUniqueWords(filepathA, filepathB, top_n=10):
-    counter_a, total_a = wordsAndFreqs(filepathA)
-    counter_b, total_b = wordsAndFreqs(filepathB)
+def compare_top_unique_words(filepathA, filepathB, top_n=10):
+    counter_a, total_a = words_and_freqs(filepathA)
+    counter_b, total_b = words_and_freqs(filepathB)
     
     words_set_a = set(counter_a.keys())
     words_set_b = set(counter_b.keys())
@@ -89,7 +100,6 @@ def compareTopUniqueWords(filepathA, filepathB, top_n=10):
     words_a, freqs_a = zip(*top_unique_a)
     words_b, freqs_b = zip(*top_unique_b)
 
-    plt = pyplot
     plt.figure(figsize=(12, 5))
     plt.subplot(1, 2, 1)
     plt.bar(words_a, freqs_a, color="steelblue")
@@ -106,9 +116,9 @@ def compareTopUniqueWords(filepathA, filepathB, top_n=10):
 
 
 # Function for comparing two books top common words
-def compareTopCommonWords(filepathA, filepathB, top_n=10):
-    counter_a, total_a = wordsAndFreqs(filepathA)
-    counter_b, total_b = wordsAndFreqs(filepathB)
+def compare_top_common_words(filepathA, filepathB, top_n=10):
+    counter_a, total_a = words_and_freqs(filepathA)
+    counter_b, total_b = words_and_freqs(filepathB)
     
     words_set_a = set(counter_a.keys())
     words_set_b = set(counter_b.keys())
@@ -123,7 +133,6 @@ def compareTopCommonWords(filepathA, filepathB, top_n=10):
     words_a, freqs_a = zip(*top_common_a)
     words_b, freqs_b = zip(*top_common_b)
 
-    plt = pyplot
     plt.figure(figsize=(12, 5))
     plt.subplot(1, 2, 1)
     plt.bar(words_a, freqs_a, color="steelblue")
@@ -140,9 +149,9 @@ def compareTopCommonWords(filepathA, filepathB, top_n=10):
 
 
 # Function for comparing two books top unique bigrams
-def compareTopUniqueBigrams(filepathA, filepathB, top_n=10):
-    counter_a, total_a = bigramsAndFreqs(filepathA)
-    counter_b, total_b = bigramsAndFreqs(filepathB)
+def compare_top_unique_bigrams(filepathA, filepathB, top_n=10):
+    counter_a, total_a = bigrams_and_freqs(filepathA)
+    counter_b, total_b = bigrams_and_freqs(filepathB)
 
     words_set_a = set(counter_a.keys())
     words_set_b = set(counter_b.keys())
@@ -161,7 +170,6 @@ def compareTopUniqueBigrams(filepathA, filepathB, top_n=10):
     pairs_a = [" ".join(w) for w in words_a]
     pairs_b = [" ".join(w) for w in words_b]
 
-    plt = pyplot
     plt.figure(figsize=(12, 5))
     plt.subplot(1, 2, 1)
     plt.bar(pairs_a, freqs_a, color="steelblue")
@@ -178,9 +186,9 @@ def compareTopUniqueBigrams(filepathA, filepathB, top_n=10):
 
 
 # Function for comparing two books top common words
-def compareTopCommonBigrams(filepathA, filepathB, top_n=10):
-    counter_a, total_a = bigramsAndFreqs(filepathA)
-    counter_b, total_b = bigramsAndFreqs(filepathB)
+def compare_top_common_bigrams(filepathA, filepathB, top_n=10):
+    counter_a, total_a = bigrams_and_freqs(filepathA)
+    counter_b, total_b = bigrams_and_freqs(filepathB)
     
     words_set_a = set(counter_a.keys())
     words_set_b = set(counter_b.keys())
@@ -198,7 +206,6 @@ def compareTopCommonBigrams(filepathA, filepathB, top_n=10):
     pairs_a = [" ".join(w) for w in words_a]
     pairs_b = [" ".join(w) for w in words_b]
 
-    plt = pyplot
     plt.figure(figsize=(12, 5))
     plt.subplot(1, 2, 1)
     plt.bar(pairs_a, freqs_a, color="steelblue")
@@ -228,14 +235,14 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     if args.function == "words":
-        analyzeWords(args.filepath, top_n=args.number)
+        analyze_words(args.filepath, top_n=args.number)
     elif args.function == "bigrams":
-        analyzeBigrams(args.filepath, top_n=args.number)
+        analyze_bigrams(args.filepath, top_n=args.number)
     elif args.function == "compare-unique-words":
-        compareTopUniqueWords(args.filepath, args.filepath2, top_n=args.number)
+        compare_top_unique_words(args.filepath, args.filepath2, top_n=args.number)
     elif args.function == "compare-common-words":
-        compareTopCommonWords(args.filepath, args.filepath2, top_n=args.number)
+        compare_top_common_words(args.filepath, args.filepath2, top_n=args.number)
     elif args.function == "compare-unique-bigrams":
-        compareTopUniqueBigrams(args.filepath, args.filepath2, top_n=args.number)
+        compare_top_unique_bigrams(args.filepath, args.filepath2, top_n=args.number)
     elif args.function == "compare-common-bigrams":
-        compareTopCommonBigrams(args.filepath, args.filepath2, top_n=args.number)
+        compare_top_common_bigrams(args.filepath, args.filepath2, top_n=args.number)
